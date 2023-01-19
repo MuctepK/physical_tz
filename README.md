@@ -6,8 +6,14 @@
 ```bash
 git clone https://github.com/MuctepK/physical_tz .
 ```
+либо 
+```bash
+git init
+git remote add origin https://github.com/MuctepK/physical_tz
+git pull origin master
+```
 
-После клонирования перейдите в склонированную папку и вывполните следующие команды:
+После скачивания проекта вывполните следующие команды:
 
 Соберите контейнеры
 ```bash
