@@ -14,4 +14,3 @@ class PostFactory(factory.django.DjangoModelFactory):
         model = Post
     title = factory.Sequence(lambda n: f'Title of post #{n}')
     text = factory.faker.Faker('sentence')
-

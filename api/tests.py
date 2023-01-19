@@ -61,4 +61,3 @@ def test_retrieve_post_increment_number_of_views(path, client):
 
     res = client.get(f'{path}{post.id}/')
     assert res.json()['number_of_views'] == 2
-

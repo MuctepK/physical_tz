@@ -1,5 +1,5 @@
 from django.db.models import F, Prefetch
-from rest_framework import viewsets, renderers
+from rest_framework import viewsets
 from rest_framework.response import Response
 
 from api.models import Post, Comment
