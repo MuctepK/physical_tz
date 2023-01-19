@@ -20,3 +20,4 @@ unit.xml
 junit.xml
 .idea
 db.sqlite3
+.pytest_cache
