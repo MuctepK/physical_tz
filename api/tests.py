@@ -6,6 +6,7 @@ from api.factories import PostFactory, CommentFactory
 
 DATETIME_FORMAT = settings.REST_FRAMEWORK['DATETIME_FORMAT']
 
+
 @pytest.fixture
 def path():
     return '/api/posts/'
@@ -55,10 +56,9 @@ def test_retrieve_post_increment_number_of_views(path, client):
     assert res.json()[0]['number_of_views'] == 0
 
     # The current retrieve will increment number of views
-    res = client.get(f'{path}/{post.id}/')
-    print(res.content)
-    # assert res.json()['number_of_views'] == 1
-    #
-    # res = client.get(f'{path}/{post.id}')
-    # assert res.json()['number_of_views'] == 2
+    res = client.get(f'{path}{post.id}/')
+    assert res.json()['number_of_views'] == 1
+
+    res = client.get(f'{path}{post.id}/')
+    assert res.json()['number_of_views'] == 2
 
