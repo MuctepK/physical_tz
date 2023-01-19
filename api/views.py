@@ -7,10 +7,11 @@ from api.serializers import PostSerializer
 
 
 class PostViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = (Post.objects.
-                prefetch_related(
-                    Prefetch('comments', queryset=Comment.objects.order_by('-created_at')))
-                .order_by('-created_at'))
+    queryset = (
+        Post.objects.
+        prefetch_related(
+            Prefetch('comments', queryset=Comment.objects.order_by('-created_at'))).order_by('-created_at')
+    )
 
     serializer_class = PostSerializer
 
