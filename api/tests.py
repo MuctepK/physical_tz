@@ -17,7 +17,7 @@ def client():
 
 
 @pytest.mark.django_db
-def test_posts_structure_and_ordering(path, client):
+def test_list_posts_structure_and_ordering(path, client):
     # Test the structure of endpoint + ordering (by default -> last created first)
     post1, post2 = PostFactory(), PostFactory()
     comment1, comment2 = CommentFactory.create_batch(size=2, post=post1)
@@ -25,27 +25,40 @@ def test_posts_structure_and_ordering(path, client):
 
     res = client.get(path)
     assert res.json() == [
-        {'title': post2.title,
+        {'id': post2.id,
+         'title': post2.title,
          'text': post2.text,
          'number_of_views': 0,
          'created_at': post2.created_at.strftime(DATETIME_FORMAT),
-         'comments': [
-             {'created_at': comment4.created_at.strftime(DATETIME_FORMAT),
-              'text': comment4.text},
-             {'created_at': comment3.created_at.strftime(DATETIME_FORMAT),
-              'text': comment3.text}]
+         'last_comment': {'pk': comment4.pk,
+                          'text': comment4.text}
          },
-        {'title': post1.title,
+        {'id': post1.id,
+         'title': post1.title,
          'text': post1.text,
          'number_of_views': 0,
          'created_at': post1.created_at.strftime(DATETIME_FORMAT),
-         'comments': [
-             {'created_at': comment2.created_at.strftime(DATETIME_FORMAT),
-              'text': comment2.text},
-             {'created_at': comment1.created_at.strftime(DATETIME_FORMAT),
-              'text': comment1.text}]
+         'last_comment': {'pk': comment2.pk,
+                          'text': comment2.text},
          }
         ]
+
+
+@pytest.mark.django_db
+def test_detail_post_structure(path, client):
+    # Test the structure of detail endpoint
+    post = PostFactory()
+    comment1, comment2, comment3 = CommentFactory.create_batch(size=3, post=post)
+    res = client.get(f'{path}{post.id}/')
+    assert res.json() == {
+        'id': post.id,
+        'title': post.title,
+        'text': post.text,
+        'comments': [{'pk': comment3.pk, 'text': comment3.text},
+                     {'pk': comment2.pk, 'text': comment2.text},
+                     {'pk': comment1.pk, 'text': comment1.text}],
+        'created_at': post.created_at.strftime(DATETIME_FORMAT),
+        'number_of_views': 1}
 
 
 @pytest.mark.django_db
